@@ -60,21 +60,21 @@ txna ApplicationArgs 0
 byte "chat"
 ==
 bnz chat
-//join a chat
+//change name
 txna ApplicationArgs 0
-byte "join"
+byte "name"
 ==
-bnz join
-join:
-itxn_begin
-int pay
-itxn_field TypeEnum
-int 0
-itxn_field Amount
-global CurrentApplicationAddress
-itxn_field Receiver
-itxn_submit
-int 1
+bnz changeName
+changeName:
+byte "Creator"
+app_global_get
+txn Sender
+==
+bz failed
+byte "name"
+txna ApplicationArgs 1
+app_global_put
+int 1 
 return
 //change pic
 changePic:
