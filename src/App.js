@@ -19,6 +19,8 @@ const tealContracts = {
   chat: {},
 }
 
+const previousPosts = {}
+
 var friends = []
 
 var refresh = false
@@ -161,7 +163,7 @@ class App extends Component {
 
     let name = "chat"
 
-    Pipeline.deployTeal(tealContracts[name].program, tealContracts[name].clearProgram, [0, 4, 0, 0], ["create"]).then(data => {
+    Pipeline.deployTeal(tealContracts[name].program, tealContracts[name].clearProgram, [0, 5, 0, 0], ["create"]).then(data => {
       document.getElementById("appid").value = data;
       this.setState({ appAddress: algosdk.getApplicationAddress(data) });
     })
@@ -239,8 +241,12 @@ class App extends Component {
 
   check = () => {
 
-    for(let i = 0; i< friends.length; i++){
-      this.readGlobal(Object.keys(friends)[i])
+    let appId = document.getElementById("appid").value
+
+    let friendsAndMe = [...friends, appId]
+
+    for (let i = 0; i < friendsAndMe.length; i++) {
+      this.readGlobal(friendsAndMe[i])
     }
   }
 
@@ -257,56 +263,63 @@ class App extends Component {
   readGlobal = async (appId) => {
     let data = await Pipeline.readGlobalState(appId)
 
-        let details = {
-          creator: "",
-          name: "",
-          message: "",
-          picTxid:""
-        }
-        
-        console.log("App Data")
-        console.log(data)
-        let keyIndex = ""
-        for (let i = 0; i < data.length; i++) {
-          let thisKey = window.atob(data[i].key)
-          console.log(thisKey)
+    let details = {
+      creator: "",
+      name: "",
+      message: "",
+      picTxid: ""
+    }
 
-          switch (thisKey) {
-            case "pic":
-              keyIndex = i;
-              let myPicTxid = data[keyIndex].value.bytes
-              this.handleFetch(window.atob(myPicTxid))
-              details.picData = window.atob(myPicTxid)
-              break;
-            case "chat":
-              keyIndex = i;
-              let myMessage = window.atob(data[keyIndex].value.bytes)
-              details.message = myMessage
-              console.log(myMessage)
-              break;
-            case "name":
-              keyIndex = i;
-              let myName = window.atob(data[keyIndex].value.bytes)
-              details.name = myName
-              console.log(myName)
-              document.getElementById("name").innerText = myName
-              break;
-            case "Creator":
-              keyIndex = i;
-              let creator = data[keyIndex].value.bytes
-              details.creator = window.atob(creator)
-              break;
-            default:
-              break;
-          }
-        }
+    console.log("App Data")
+    console.log(data)
+    let keyIndex = ""
+    for (let i = 0; i < data.length; i++) {
+      let thisKey = window.atob(data[i].key)
+      console.log(thisKey)
 
-        canvasId++
-        let canvas = document.getElementById("canvas2")
-        let url = canvas.toDataURL("image/png");
-        addTableRow('<td><img src="' + url + '"></img><span class="messageName">' + details.name + "_" + appId + '</span><span class="messageText">' + " " + details.message + "</td>")
+      switch (thisKey) {
+        case "pic":
+          keyIndex = i;
+          let myPicTxid = data[keyIndex].value.bytes
+          details.picData = window.atob(myPicTxid)
+          break;
+        case "chat":
+          keyIndex = i;
+          let myMessage = window.atob(data[keyIndex].value.bytes)
+          details.message = myMessage
+          console.log(myMessage)
+          break;
+        case "name":
+          keyIndex = i;
+          let myName = window.atob(data[keyIndex].value.bytes)
+          details.name = myName
+          console.log(myName)
+          document.getElementById("name").innerText = myName
+          break;
+        case "Creator":
+          keyIndex = i;
+          let creator = data[keyIndex].value.bytes
+          details.creator = creator
+          break;
+        default:
+          break;
+      }
+    }
 
-        return details
+    if (previousPosts[appId] !== details.message) {
+
+      if (details.picData !== "") {
+        await this.handleFetch(details.picData)
+      }
+      canvasId++
+      let canvas = document.getElementById("canvas2")
+      let url = canvas.toDataURL("image/png");
+      addTableRow('<td><img src="' + url + '"></img><span class="messageName">' + details.name + "_" + appId + '</span><span class="messageText">' + " " + details.message + "</td>")
+    }
+
+    previousPosts[appId] = details.message
+
+    return details
   }
 
   readLocalState = async (net, addr, appIndex) => {
@@ -350,10 +363,10 @@ class App extends Component {
     //refresh = true
   }
 
-  handleFetch = (txid) => {
-    fetchNote(txid).then(data =>
-      this.setState({ data: base64ToArrayBuffer(data) }, () =>
-        this.drawData()));
+  handleFetch = async (txid) => {
+    let data = await fetchNote(txid)
+    this.setState({ data: base64ToArrayBuffer(data) }, () =>
+      this.drawData());
   }
 
   drawData = () => {
@@ -370,11 +383,17 @@ class App extends Component {
 
   addFriend = async () => {
     let friendId = document.getElementById("addFriend").value
-    let friendsDetails = await this.readGlobal(friendId)
-    console.log(friendsDetails)
-    friends.push(friendId)
-    let friendName = friendsDetails.name + "_" + friendId
-    this.setState({list: [...this.state.list, friendName]})
+    let appid = document.getElementById("appid").value
+    if (!friends.includes(friendId) && !(appid === friendId)) {
+      let friendsDetails = await this.readGlobal(friendId)
+      console.log(friendsDetails)
+      friends.push(friendId)
+      let friendName = friendsDetails.name + "_" + friendId
+      this.setState({ list: [...this.state.list, friendName] })
+    }
+    else {
+      alert("you are attempting to add yourself or add a friend more than once!")
+    }
   }
 
   render() {
@@ -405,7 +424,7 @@ class App extends Component {
               <h1>ACTIONS</h1>
               <button onClick={this.deploy}>Deploy Contract</button>
               <button onClick={this.optIn}>Opt In</button>
-              <input placeholder="App Id" id="appid" type="number"></input>
+              <input placeholder="App Id" id="appid" value={69417489} type="number"></input>
               <p>{"Application Address: " + this.state.appAddress}</p>
               <br></br><br></br>
               <button onClick={this.delete}>Delete App</button>
@@ -420,7 +439,7 @@ class App extends Component {
                 <p id="name"></p>
                 <canvas id="canvas2" height="30px" width="30px"></canvas><br></br>
                 <button onClick={this.startRefresh}>Refresh</button>
-                <input id="addFriend" type="number" placeholder="app id"></input>
+                <input id="addFriend" type="number" placeholder="friend's app id"></input>
                 <button onClick={this.addFriend}>Add Friend</button>
                 <h2>My Friends:</h2>
                 <h5>{this.state.list.toString()}</h5>
