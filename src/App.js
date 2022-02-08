@@ -19,6 +19,8 @@ const tealContracts = {
   chat: {},
 }
 
+var friends = []
+
 var refresh = false
 
 async function getContracts() {
@@ -112,7 +114,8 @@ class App extends Component {
       withdrawn: 0,
       contribution: 0,
       data: "",
-      messages: []
+      messages: [],
+      list: []
     }
   }
 
@@ -235,7 +238,10 @@ class App extends Component {
   }
 
   check = () => {
-    this.readGlobal(document.getElementById("appid").value)
+
+    for(let i = 0; i< friends.length; i++){
+      this.readGlobal(Object.keys(friends)[i])
+    }
   }
 
   post = async () => {
@@ -249,14 +255,15 @@ class App extends Component {
   }
 
   readGlobal = async (appId) => {
-    let details = {
-      creator: "",
-      name: "",
-      message: "",
-      picTxid:""
-    }
-    Pipeline.readGlobalState(appId).then(
-      data => {
+    let data = await Pipeline.readGlobalState(appId)
+
+        let details = {
+          creator: "",
+          name: "",
+          message: "",
+          picTxid:""
+        }
+        
         console.log("App Data")
         console.log(data)
         let keyIndex = ""
@@ -287,7 +294,7 @@ class App extends Component {
             case "Creator":
               keyIndex = i;
               let creator = data[keyIndex].value.bytes
-              details.creator = creator
+              details.creator = window.atob(creator)
               break;
             default:
               break;
@@ -299,7 +306,7 @@ class App extends Component {
         let url = canvas.toDataURL("image/png");
         addTableRow('<td><img src="' + url + '"></img><span class="messageName">' + details.name + "_" + appId + '</span><span class="messageText">' + " " + details.message + "</td>")
 
-      })
+        return details
   }
 
   readLocalState = async (net, addr, appIndex) => {
@@ -361,6 +368,15 @@ class App extends Component {
     ctx.drawImage(renderer, 0, 0, 300, 150);
   }
 
+  addFriend = async () => {
+    let friendId = document.getElementById("addFriend").value
+    let friendsDetails = await this.readGlobal(friendId)
+    console.log(friendsDetails)
+    friends.push(friendId)
+    let friendName = friendsDetails.name + "_" + friendId
+    this.setState({list: [...this.state.list, friendName]})
+  }
+
   render() {
     return (
       <div align="center">
@@ -404,6 +420,11 @@ class App extends Component {
                 <p id="name"></p>
                 <canvas id="canvas2" height="30px" width="30px"></canvas><br></br>
                 <button onClick={this.startRefresh}>Refresh</button>
+                <input id="addFriend" type="number" placeholder="app id"></input>
+                <button onClick={this.addFriend}>Add Friend</button>
+                <h2>My Friends:</h2>
+                <h5>{this.state.list.toString()}</h5>
+                <table id="friend"></table>
                 <input type="text" id="postMessage"></input>
                 <button onClick={this.post}>Post</button>
                 <table id="chatLog"></table>
