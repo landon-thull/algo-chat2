@@ -442,9 +442,11 @@ class App extends Component {
               <button onClick={this.changeName}>Change Name</button>
             </td><td>
                 <p>{"Transaction ID: " + this.state.txID}</p>
-                <h1>I Am:</h1>
-                <p id="name"></p>
-                <canvas id="canvas2" height="30px" width="30px"></canvas><br></br>
+                <div style={{ display: "none" }}>
+                  <h1>I Am:</h1>
+                  <p id="name"></p>
+                  <canvas id="canvas2" height="30px" width="30px"></canvas><br></br>
+                </div>
                 <button onClick={this.startRefresh}>Refresh</button>
                 <input id="addFriend" type="number" placeholder="friend's app id"></input>
                 <button onClick={this.addFriend}>Add Friend</button>
