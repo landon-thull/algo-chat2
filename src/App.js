@@ -3,6 +3,8 @@ import Pipeline from '@pipeline-ui-2/pipeline'; //change to import Pipeline from
 
 import algosdk from 'algosdk'
 
+//add app id 69417489 to input on frontend for testing without deployment
+
 const myAlgoWallet = Pipeline.init();
 
 Pipeline.main = false;
@@ -33,6 +35,10 @@ async function getContracts() {
     let data2 = await fetch("teal/" + name + " clear.txt")
     tealContracts[name].clearProgram = await data2.text()
   }
+}
+
+function sleep(milliseconds) {
+  return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
 
 function base64ToArrayBuffer(data) {
@@ -247,6 +253,7 @@ class App extends Component {
 
     for (let i = 0; i < friendsAndMe.length; i++) {
       this.readGlobal(friendsAndMe[i])
+      sleep(1000)
     }
   }
 
@@ -424,7 +431,7 @@ class App extends Component {
               <h1>ACTIONS</h1>
               <button onClick={this.deploy}>Deploy Contract</button>
               <button onClick={this.optIn}>Opt In</button>
-              <input placeholder="App Id" id="appid" value={69417489} type="number"></input>
+              <input placeholder="App Id" id="appid" type="number"></input>
               <p>{"Application Address: " + this.state.appAddress}</p>
               <br></br><br></br>
               <button onClick={this.delete}>Delete App</button>
