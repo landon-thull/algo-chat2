@@ -342,7 +342,7 @@ class App extends Component {
 
         if (myId === appId){messageClass = "me"}
 
-        addTableRow('<div id="upperMessage"><img width="30px" class="avatar" src="' + url + '"></img><span class="messageName">' + details.name + "_" + appId + '</span></div><div class="messageText">' + " " + details.message + "</div>", messageClass)
+        addTableRow('<div id="upperMessage" class="upperMessage-' + messageClass + '"><img width="30px" class="avatar-' + messageClass + '" src="' + url + '"></img><span class="messageName">' + details.name + "_" + appId + '</span></div><div class="messageText">' + " " + details.message + "</div>", messageClass)
       }
 
       previousPosts[appId] = details.message
