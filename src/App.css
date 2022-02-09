@@ -153,3 +153,13 @@ td {
         outline: 0;
         box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
     }
+
+.avatar {
+    margin: 5px;
+    display: inline-block
+}
+
+.messageName {
+    font-weight: bold!important;
+    color:red
+}
