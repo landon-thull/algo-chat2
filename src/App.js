@@ -64,12 +64,12 @@ function addAlpha(data) {
 
 }
 
-function addTableRow(data) {
+function addTableRow(data,className) {
   let table = document.getElementById("chatLog");
   let row = table.insertRow(0);
   let cell1 = row.insertCell(0);
   cell1.innerHTML = data;
-  cell1.className = "messageDiv"
+  cell1.className = className
 }
 
 function rgbFrom8(data) {
@@ -336,7 +336,13 @@ class App extends Component {
 
         if (details.picData === "") { url = "anon.png" }
 
-        addTableRow('<div id="upperMessage"><img width="30px" class="avatar" src="' + url + '"></img><span class="messageName">' + details.name + "_" + appId + '</span></div><div class="messageText">' + " " + details.message + "</div>")
+        let myId = document.getElementById("appid").value
+
+        let messageClass = "others"
+
+        if (myId === appId){messageClass = "me"}
+
+        addTableRow('<div id="upperMessage"><img width="30px" class="avatar" src="' + url + '"></img><span class="messageName">' + details.name + "_" + appId + '</span></div><div class="messageText">' + " " + details.message + "</div>", messageClass)
       }
 
       previousPosts[appId] = details.message
