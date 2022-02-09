@@ -280,66 +280,72 @@ class App extends Component {
   }
 
   readGlobal = async (appId) => {
-    let data = await Pipeline.readGlobalState(appId)
+    try {
+      let data = await Pipeline.readGlobalState(appId)
 
-    let details = {
-      creator: "",
-      name: "",
-      message: "",
-      picTxid: ""
-    }
-
-    console.log("App Data")
-    console.log(data)
-    let keyIndex = ""
-    for (let i = 0; i < data.length; i++) {
-      let thisKey = window.atob(data[i].key)
-      console.log(thisKey)
-
-      switch (thisKey) {
-        case "pic":
-          keyIndex = i;
-          let myPicTxid = data[keyIndex].value.bytes
-          details.picData = window.atob(myPicTxid)
-          break;
-        case "chat":
-          keyIndex = i;
-          let myMessage = window.atob(data[keyIndex].value.bytes)
-          details.message = myMessage
-          console.log(myMessage)
-          break;
-        case "name":
-          keyIndex = i;
-          let myName = window.atob(data[keyIndex].value.bytes)
-          details.name = myName
-          console.log(myName)
-          break;
-        case "Creator":
-          keyIndex = i;
-          let creator = data[keyIndex].value.bytes
-          details.creator = creator
-          break;
-        default:
-          break;
+      let details = {
+        creator: "",
+        name: "",
+        message: "",
+        picTxid: ""
       }
-    }
 
-    if (previousPosts[appId] !== details.message) {
+      console.log("App Data")
+      console.log(data)
+      let keyIndex = ""
+      for (let i = 0; i < data.length; i++) {
+        let thisKey = window.atob(data[i].key)
+        console.log(thisKey)
 
-      if (details.picData !== "") {
-        await this.handleFetch(details.picData)
+        switch (thisKey) {
+          case "pic":
+            keyIndex = i;
+            let myPicTxid = data[keyIndex].value.bytes
+            details.picData = window.atob(myPicTxid)
+            break;
+          case "chat":
+            keyIndex = i;
+            let myMessage = window.atob(data[keyIndex].value.bytes)
+            details.message = myMessage
+            console.log(myMessage)
+            break;
+          case "name":
+            keyIndex = i;
+            let myName = window.atob(data[keyIndex].value.bytes)
+            details.name = myName
+            console.log(myName)
+            break;
+          case "Creator":
+            keyIndex = i;
+            let creator = data[keyIndex].value.bytes
+            details.creator = creator
+            break;
+          default:
+            break;
+        }
       }
-      canvasId++
-      let canvas = document.getElementById("canvas2")
-      let url = canvas.toDataURL("image/png");
-      addTableRow('<td width="40px"><img class="avatar" src="' + url + '"></img></td><td class="messageName">' + details.name + "_" + appId + '</td><td class="messageText">' + " " + details.message + "</td>")
+
+      if (previousPosts[appId] !== details.message) {
+
+        if (details.picData !== "") {
+          await this.handleFetch(details.picData)
+        }
+        canvasId++
+        let canvas = document.getElementById("canvas2")
+        let url = canvas.toDataURL("image/png");
+
+        if (details.picData === "") { url = "anon.png" }
+
+        addTableRow('<td width="40px"><img class="avatar" src="' + url + '"></img></td><td class="messageName">' + details.name + "_" + appId + '</td><td class="messageText">' + " " + details.message + "</td>")
+      }
+
+      previousPosts[appId] = details.message
+
+      console.log(details)
+
+      return details
     }
-
-    previousPosts[appId] = details.message
-
-    console.log(details)
-
-    return details
+    catch (error) { console.log(error) }
   }
 
   readLocalState = async (net, addr, appIndex) => {
