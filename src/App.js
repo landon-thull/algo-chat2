@@ -3,8 +3,8 @@ import Pipeline from '@pipeline-ui-2/pipeline'; //change to import Pipeline from
 
 import algosdk from 'algosdk'
 import logo from "./logo.svg";
-import "./bootstrap.css";
-import "./App.css";
+//import "./bootstrap.css";
+//import "./App.css";
 
 //add app id 69417489 to input on frontend for testing without deployment
 
@@ -336,7 +336,7 @@ class App extends Component {
 
         if (details.picData === "") { url = "anon.png" }
 
-        addTableRow('<td width="40px"><img class="avatar" src="' + url + '"></img></td><td class="messageName">' + details.name + "_" + appId + '</td><td class="messageText">' + " " + details.message + "</td>")
+        addTableRow('<div width="40px"><img class="avatar" src="' + url + '"></img></div><div class="messageName">' + details.name + "_" + appId + '</div><div class="messageText">' + " " + details.message + "</div>")
       }
 
       previousPosts[appId] = details.message

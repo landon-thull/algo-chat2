@@ -163,3 +163,7 @@ td {
     font-weight: bold!important;
     color:red
 }
+
+.message {
+    display: flex
+}
