@@ -9,6 +9,8 @@ const myAlgoWallet = Pipeline.init();
 
 Pipeline.main = false;
 
+var toggled = true
+
 var ready = false
 
 var canvasId = 2
@@ -123,7 +125,8 @@ class App extends Component {
       contribution: 0,
       data: "",
       messages: [],
-      list: []
+      list: [],
+      toggled: "block"
     }
   }
 
@@ -403,44 +406,60 @@ class App extends Component {
     }
   }
 
+  options = () => {
+    toggled = !toggled
+    if (toggled) {
+      this.setState({ toggled: "block" })
+      document.getElementById("toggler").innerText = "Hide"
+    }
+    else {
+      this.setState({ toggled: "none" })
+      document.getElementById("toggler").innerText = "Show"
+    }
+
+  }
+
   render() {
     return (
       <div align="center">
         <h1>Algo Chat</h1>
-        <table className="table" width="100%">
+        <h2>Profile Pic. UserName. Messages. 100% ON-CHAIN!</h2>
+        <button id="toggler" onClick={this.options}>Hide</button>
+        <table className="table" width="100%" align="center">
           <tbody>
-            <tr><td width="50%">
+            <tr ><td>
+              <div style={{ display: this.state.toggled }}>
 
-              <select onClick={this.setNet}>
-                <option>TestNet</option>
-                <option>MainNet</option>
-              </select>
-              <h2>{this.state.net}</h2>
-              <select onChange={this.switchConnector}>
-                <option>myAlgoWallet</option>
-                <option>WalletConnect</option>
-                <option>AlgoSigner</option>
-              </select>
+                <select onClick={this.setNet}>
+                  <option>TestNet</option>
+                  <option>MainNet</option>
+                </select>
+                <h2>{this.state.net}</h2>
+                <select onChange={this.switchConnector}>
+                  <option>myAlgoWallet</option>
+                  <option>WalletConnect</option>
+                  <option>AlgoSigner</option>
+                </select>
 
-              <button onClick={this.handleConnect}>Click to Connect</button><br></br>
-              <p>{"Connected Address: " + this.state.myAddress}</p>
-              <p>{"Balance: " + this.state.balance}</p>
+                <button onClick={this.handleConnect}>Click to Connect</button><br></br>
+                <p>{"Connected Address: " + this.state.myAddress}</p>
+                <p>{"Balance: " + this.state.balance}</p>
 
-
-
-              <h1>ACTIONS</h1>
-              <button onClick={this.deploy}>Deploy Contract</button>
-              <button onClick={this.optIn}>Opt In</button>
-              <input placeholder="App Id" id="appid" type="number"></input>
-              <p>{"Application Address: " + this.state.appAddress}</p>
-              <br></br><br></br>
-              <button onClick={this.delete}>Delete App</button>
-              <h3>Profile Actions:</h3>
-              <input type="text" id="picAddress" placeholder="txid of pic"></input>
-              <button onClick={this.changePic}>Fuse</button><br></br>
-              <input type="text" id="userName" placeholder="user name"></input>
-              <button onClick={this.changeName}>Change Name</button>
-            </td><td>
+                <h1>ACTIONS</h1>
+                <button onClick={this.deploy}>Deploy Contract</button>
+                <button onClick={this.optIn}>Opt In</button>
+                <input placeholder="App Id" id="appid" type="number"></input>
+                <p>{"Application Address: " + this.state.appAddress}</p>
+                <br></br><br></br>
+                <button onClick={this.delete}>Delete App</button>
+                <h3>Profile Actions:</h3>
+                <input type="text" id="picAddress" placeholder="txid of pic"></input>
+                <button onClick={this.changePic}>Fuse</button><br></br>
+                <input type="text" id="userName" placeholder="user name"></input>
+                <button onClick={this.changeName}>Change Name</button>
+              </div>
+            </td>
+              <td>
                 <p>{"Transaction ID: " + this.state.txID}</p>
                 <div style={{ display: "none" }}>
                   <h1>I Am:</h1>
@@ -456,14 +475,10 @@ class App extends Component {
                 <input type="text" id="postMessage"></input>
                 <button onClick={this.post}>Post</button>
                 <table id="chatLog"></table>
-              </td></tr>
+              </td>
+            </tr>
           </tbody>
         </table>
-        <button onClick={async () => {
-          let data = await this.readGlobal()
-          alert(data)
-
-        }}>Test</button>
       </div >
 
     );
