@@ -287,7 +287,7 @@ class App extends Component {
         creator: "",
         name: "",
         message: "",
-        picTxid: ""
+        picData: ""
       }
 
       console.log("App Data")
@@ -336,7 +336,7 @@ class App extends Component {
 
         if (details.picData === "") { url = "anon.png" }
 
-        addTableRow('<div id="upperMessage"><img class="avatar" src="' + url + '"></img><span class="messageName">' + details.name + "_" + appId + '</span></div><div class="messageText">' + " " + details.message + "</div>")
+        addTableRow('<div id="upperMessage"><img width="30px" class="avatar" src="' + url + '"></img><span class="messageName">' + details.name + "_" + appId + '</span></div><div class="messageText">' + " " + details.message + "</div>")
       }
 
       previousPosts[appId] = details.message
