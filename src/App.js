@@ -69,7 +69,7 @@ function addTableRow(data) {
   let row = table.insertRow(0);
   let cell1 = row.insertCell(0);
   cell1.innerHTML = data;
-  row.className = "message"
+  cell1.className = "messageDiv"
 }
 
 function rgbFrom8(data) {
@@ -336,7 +336,7 @@ class App extends Component {
 
         if (details.picData === "") { url = "anon.png" }
 
-        addTableRow('<div width="40px"><img class="avatar" src="' + url + '"></img></div><div class="messageName">' + details.name + "_" + appId + '</div><div class="messageText">' + " " + details.message + "</div>")
+        addTableRow('<div id="upperMessage"><img class="avatar" src="' + url + '"></img><span class="messageName">' + details.name + "_" + appId + '</span></div><div class="messageText">' + " " + details.message + "</div>")
       }
 
       previousPosts[appId] = details.message
