@@ -329,6 +329,8 @@ class App extends Component {
 
     previousPosts[appId] = details.message
 
+    console.log(details)
+
     return details
   }
 
