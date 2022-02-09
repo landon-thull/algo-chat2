@@ -266,11 +266,17 @@ class App extends Component {
   post = async () => {
 
     let appId = document.getElementById("appid").value
+    if (appId === "") { alert("you forgot to tell us what your app Id is!") }
 
-    let appAddress = algosdk.getApplicationAddress(parseInt(appId))
-    let myMessage = document.getElementById("postMessage").value
+    else {
+      let appAddress = algosdk.getApplicationAddress(parseInt(appId))
+      let myMessage = document.getElementById("postMessage").value
 
-    Pipeline.appCall(appId, ["chat", myMessage]).then(data => { this.setState({ txID: data }) })
+      Pipeline.appCall(appId, ["chat", myMessage]).then(data => {
+        this.setState({ txID: data })
+        this.startRefresh()
+      })
+    }
   }
 
   readGlobal = async (appId) => {
@@ -373,8 +379,8 @@ class App extends Component {
 
   startRefresh = () => {
     this.check()
-    //if(!refresh){setInterval(() => this.check(),5000)}
-    //refresh = true
+    if (!refresh) { setInterval(() => this.check(), 5000) }
+    refresh = true
   }
 
   handleFetch = async (txid) => {
@@ -469,7 +475,7 @@ class App extends Component {
         <h2 className="px-2 badge bg-warning">{this.state.net}</h2>
         <div className="App container bg-light shadow">
           <header className="App-header">
-           <img src={logo} className={loadingSpin} alt="logo" />
+            <img src={logo} className={loadingSpin} alt="logo" />
             <h1 className="App-title">
               Algo Chat
               <span className="px-2" role="img" aria-label="Chat">
@@ -488,7 +494,7 @@ class App extends Component {
             <div className="col-4  pt-3 border-right">
               <h6>Say something about Algorand</h6>
               <div className="comment-form" />
-              <div ><div className="form-group"><input className="form-control" placeholder="😎 Your Name" name="name" type="text" /></div><div className="form-group"><textarea className="form-control" placeholder="🤬 Your Comment" name="message" rows="5" spellCheck="false" type="text" id="postMessage"></textarea></div><div className="alert alert-danger" style={{ display: "none" }}>Something went wrong while submitting form.</div><div className="form-group">
+              <div ><div className="form-group"></div><div className="form-group"><textarea className="form-control" placeholder="🤬 Your Comment" name="message" rows="5" spellCheck="false" type="text" id="postMessage"></textarea></div><div className="alert alert-danger" style={{ display: "none" }}>Something went wrong while submitting form.</div><div className="form-group">
                 <button className="btn btn-primary form-group" onClick={this.post}>Comment ➤</button></div></div>
             </div>
             <div className="col-8  pt-3 bg-white">
@@ -497,7 +503,7 @@ class App extends Component {
                 comments={this.state.comments}
               />
               <div className="comment-list"><h5 className="text-muted mb-4"><span className="badge badge-success">0</span> Comment</h5><div className="alert text-center alert-info">Be the first to comment</div> <div><table width="100%" className="media-body p-2 shadow-sm rounded bg-light border rounded" id="chatLog"></table></div></div></div><footer className="App-footer"><button className="btn btn-bd-light" onClick={this.startRefresh}>Refresh</button>
-              <canvas id="canvas2" height="30px" width="30px" style={{display: "none"}}></canvas>
+              <canvas id="canvas2" height="30px" width="30px" style={{ display: "none" }}></canvas>
               <div>{"Transaction ID: " + this.state.txID}</div>
             </footer></div>
         </div>
@@ -514,6 +520,8 @@ class App extends Component {
                     <button className="btn btn-sm btn-bd-light mb-2 mb-md-0" onClick={this.deploy}>Deploy Contract</button>
                     <button className="btn btn-sm btn-bd-light mb-2 mb-md-0" onClick={this.optIn}>Opt In</button>
                     <input className="form-control ds-input" placeholder="App Id" id="appid" type="number"></input>
+                    <input id="userName" className="form-control" placeholder="😎 Your Name" name="name" type="text" />
+                    <button onClick={this.changeName}>Change Name</button>
                   </td>
                   <td width="50%">
 
