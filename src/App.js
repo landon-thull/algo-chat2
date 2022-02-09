@@ -3,8 +3,8 @@ import Pipeline from '@pipeline-ui-2/pipeline'; //change to import Pipeline from
 
 import algosdk from 'algosdk'
 import logo from "./logo.svg";
-//import "./bootstrap.css";
-//import "./App.css";
+import "./bootstrap.css";
+import "./App.css";
 
 //add app id 69417489 to input on frontend for testing without deployment
 
