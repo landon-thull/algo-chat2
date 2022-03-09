@@ -14,9 +14,11 @@ Pipeline.main = false;
 
 var toggled = true
 
-var ready = false
+var friendsTxid = ""
 
 var canvasId = 2
+
+var friendsFetched = false
 
 var mynet = (Pipeline.main) ? "MainNet" : "TestNet";
 
@@ -64,7 +66,7 @@ function addAlpha(data) {
 
 }
 
-function addTableRow(data,className) {
+function addTableRow(data, className) {
   let table = document.getElementById("chatLog");
   let row = table.insertRow(0);
   let cell1 = row.insertCell(0);
@@ -321,6 +323,16 @@ class App extends Component {
             let creator = data[keyIndex].value.bytes
             details.creator = creator
             break;
+          case "friends":
+            keyIndex = i;
+            friendsTxid = window.atob(data[keyIndex].value.bytes)
+            console.log("FriendsTxid:")
+            console.log(friendsTxid)
+            if(!friendsFetched){
+              this.getFriends()
+              friendsFetched = false
+            }
+            break;
           default:
             break;
         }
@@ -341,7 +353,7 @@ class App extends Component {
 
         let messageClass = "others"
 
-        if (myId === appId){messageClass = "me"}
+        if (myId === appId) { messageClass = "me" }
 
         addTableRow('<div id="upperMessage" class="upperMessage-' + messageClass + '"><img width="30px" class="avatar-' + messageClass + '" src="' + url + '"></img><span class="messageName">' + details.name + "_" + appId + '</span></div><div class="messageText">' + " " + details.message + "</div>", messageClass)
       }
@@ -355,45 +367,32 @@ class App extends Component {
     catch (error) { console.log(error) }
   }
 
-  readLocalState = async (net, addr, appIndex) => {
-
-    try {
-
-      let url = ""
-
-      if (!net) {
-        url = "https://algoindexer.testnet.algoexplorerapi.io"
-      }
-      else {
-        url = "https://algoindexer.algoexplorerapi.io"
-      }
-
-      let appData = await fetch(url + '/v2/accounts/' + addr)
-      let appJSON = await appData.json()
-      let AppStates = await appJSON.account["apps-local-state"]
-      AppStates.forEach(state => {
-        if (state.id === parseInt(appIndex)) {
-          let keyvalues = state["key-value"]
-          keyvalues.forEach(entry => {
-            if (entry.key === "YW10") {
-              let contribution = entry.value.uint
-              this.setState({ share: parseInt((contribution / this.state.goal) * 100) || 0 })
-            }
-            if (entry.key === "d2l0aGRyYXdu") {
-              let withdrawn = entry.value.uint
-              this.setState({ withdrawn: withdrawn || 0 })
-            }
-          })
-        }
-      })
-    }
-    catch (error) { console.log(error) }
-  }
-
   startRefresh = () => {
     this.check()
     if (!refresh) { setInterval(() => this.check(), 5000) }
     refresh = true
+  }
+
+  getFriends = async () => {
+
+    let url = ""
+    if (Pipeline.main) {
+      url = "https://algoindexer.algoexplorerapi.io"
+    }
+    else {
+      url = "https://algoindexer.testnet.algoexplorerapi.io"
+    }
+
+    let data = await fetch(url + "/v2/transactions/" + friendsTxid)
+    let dataJson = await data.json()
+    let parsed = window.atob(dataJson.transaction.note).split(",")
+    let newArray = []
+    parsed.forEach(item => {
+      newArray.push(parseInt(item))
+    })
+    console.log(newArray)
+    friends = newArray
+
   }
 
   handleFetch = async (txid) => {
@@ -417,12 +416,27 @@ class App extends Component {
   addFriend = async () => {
     let friendId = document.getElementById("addFriend").value
     let appid = document.getElementById("appid").value
+
     if (!friends.includes(friendId) && !(appid === friendId)) {
+
       let friendsDetails = await this.readGlobal(friendId)
+
+      if (friendsDetails !== undefined){
+      
       console.log(friendsDetails)
       friends.push(friendId)
       let friendName = friendsDetails.name + "_" + friendId
       this.setState({ list: [...this.state.list, friendName] })
+      let friendsMod = friends.toString().replace(/\"/g,"")
+      alert(friendsMod)
+      let txid = await Pipeline.send(Pipeline.address,0,friendsMod,undefined,undefined,0)
+      alert(txid)
+      let txid2 = await Pipeline.appCall(parseInt(appid),["friends",txid])
+      this.setState({txID:txid2})
+      }
+      else{
+        alert("invalid app id")
+      }
     }
     else {
       alert("you are attempting to add yourself or add a friend more than once!")

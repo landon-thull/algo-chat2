@@ -65,6 +65,22 @@ txna ApplicationArgs 0
 byte "name"
 ==
 bnz changeName
+//change friends txid
+txna ApplicationArgs 0
+byte "friends"
+==
+bnz changeFriends
+changeFriends:
+byte "Creator"
+app_global_get
+txn Sender
+==
+bz failed
+byte "friends"
+txna ApplicationArgs 1
+app_global_put
+int 1
+return
 changeName:
 byte "Creator"
 app_global_get
