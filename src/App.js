@@ -204,6 +204,7 @@ class App extends Component {
 
     let appAddress = algosdk.getApplicationAddress(parseInt(appId))
     let pictx = document.getElementById("picAddress").value
+    alert(pictx)
     console.log(pictx)
 
     Pipeline.appCall(appId, ["pic", pictx]).then(data => { this.setState({ txID: data }) })
@@ -520,7 +521,6 @@ class App extends Component {
             </footer></div>
         </div>
         <div className="App container ">
-          <input className="form-control" type="text" id="picAddress" placeholder="txid of pic" />
           <div className="bd-example">
             <table className="table" width="100%">
               <td>
