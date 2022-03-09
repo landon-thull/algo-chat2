@@ -131,7 +131,8 @@ class App extends Component {
       data: "",
       messages: [],
       list: [],
-      toggled: "block"
+      toggled: "block",
+      mlength:0
     }
   }
 
@@ -356,6 +357,8 @@ class App extends Component {
         if (myId === appId) { messageClass = "me" }
 
         addTableRow('<div id="upperMessage" class="upperMessage-' + messageClass + '"><img width="30px" class="avatar-' + messageClass + '" src="' + url + '"></img><span class="messageName">' + details.name + "_" + appId + '</span></div><div class="messageText">' + " " + details.message + "</div>", messageClass)
+
+        this.setState({mlength:this.state.mlength + 1})
       }
 
       previousPosts[appId] = details.message
@@ -529,7 +532,7 @@ class App extends Component {
                 loading={this.state.loading}
                 comments={this.state.comments}
               />
-              <div className="comment-list"><h5 className="text-muted mb-4"><span className="badge badge-success">0</span> Comment</h5><div className="alert text-center alert-info">Be the first to comment</div> <div><table width="100%" className="media-body p-2 shadow-sm rounded bg-light border rounded" id="chatLog"></table></div></div></div><footer className="App-footer"><button className="btn btn-bd-light" onClick={this.startRefresh}>Refresh</button>
+              <div className="comment-list"><h5 className="text-muted mb-4"><span className="badge badge-success">{this.state.mlength}</span> Comment</h5><div className="alert text-center alert-info">Be the first to comment</div> <div><table width="100%" className="media-body p-2 shadow-sm rounded bg-light border rounded" id="chatLog"></table></div></div></div><footer className="App-footer"><button className="btn btn-bd-light" onClick={this.startRefresh}>Refresh</button>
               <canvas id="canvas2" height="30px" width="30px" style={{ display: "none" }}></canvas>
               <div>{"Transaction ID: " + this.state.txID}</div>
             </footer></div>
