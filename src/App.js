@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Pipeline from '@pipeline-ui-2/pipeline'; //change to import Pipeline from 'Pipeline for realtime editing Pipeline index.js, and dependency to: "Pipeline": "file:..",
 
 import algosdk from 'algosdk'
-import "./App.css";
 import logo from "./logo.svg";
 import "./bootstrap.css";
 import "./App.css";
@@ -558,6 +557,8 @@ this.setState({
         </div>
         <div className="d-flex align-items-center mb-lg-0 me-lg-auto text-dark text-decoration-none">
         <div className="flex-start">
+        
+                  
         <button
                     onClick={()=>{
                       toggleMode()
@@ -569,6 +570,17 @@ this.setState({
                     >
                       <Svg9/>
                     <Svg10/>
+                    </button>
+                    <button
+                   onClick={this.handleConnect}
+                      id="toggle-css"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="shoulder__item ml-2"
+                    >
+
+                  <svg className="svg-inline--fa fa-wallet " aria-hidden="true" focusable="false" data-prefix="fas" data-icon="wallet" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
+                    <path d="M461.2 128H80c-8.84 0-16-7.16-16-16s7.16-16 16-16h384c8.84 0 16-7.16 16-16 0-26.51-21.49-48-48-48H64C28.65 32 0 60.65 0 96v320c0 35.35 28.65 64 64 64h397.2c28.02 0 50.8-21.53 50.8-48V176c0-26.47-22.78-48-50.8-48zM416 336c-17.67 0-32-14.33-32-32s14.33-32 32-32 32 14.33 32 32-14.33 32-32 32z"></path></svg>
                     </button>
                     </div>
                     <div className="flex-start">
@@ -588,11 +600,11 @@ this.setState({
         </header>
 
         <div className="App container bg-light shadow  app-header mb-4">
-            <a href={this.state.txidUrl} className="d-flex align-items-center mt-2 mb-2 me-lg-auto text-dark text-decoration-none">
-            <div>{"Transaction ID: " + this.state.txID}</div>
+            <a target="_blank"  href={this.state.txidUrl} className="d-flex align-items-center mt-2 mb-2 me-lg-auto text-dark text-decoration-none">
+            <div className="address-elipse">{"Transaction ID: " + this.state.txID}</div>
             </a>
             <a target="_blank"  href={this.state.myUrl} className="d-flex align-items-center mt-2 mb-2 me-lg-auto text-dark text-decoration-none">
-              <div>{"Connected Address: " + this.state.myAddress}</div>
+              <div className="address-elipse">{"Connected Address: " + this.state.myAddress}</div>
             </a>
             </div>
         
@@ -603,8 +615,8 @@ this.setState({
           <header className="App-header">
             <h1 className="App-title">
               algochat
-              <span className="px-2" role="img" aria-label="Chat">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-dots" viewBox="0 0 16 16">
+              <span className="px-1" role="img" aria-label="Chat">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chat-left-dots" viewBox="0 0 16 16">
   <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"></path>
   <path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
 </svg>
@@ -647,7 +659,7 @@ this.setState({
               <button  className=" btn-pills btn btn-light mb-2 " onClick={this.startRefresh}>Refresh</button>
              
               </div>
-              <div class="controls-row-2">
+              <div className="controls-row-2">
 
 </div>
      
