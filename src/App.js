@@ -751,29 +751,74 @@ this.setState({
         </div>
 
         </div>
-        <div className="App container bg-light shadow  app-header-2 footer-1 mb-4">
-       <div className="right-row">
-        <h4 className="built-by"> Built by{" "}
-              <a className="text-light brand-light" href="https://headline-inc.com">
-                HEADLINE
-              </a>
-            </h4>
-            </div>
-        <div className="full-row">
+        <div class="right-row mb-4"><h4 class="built-by"> Built by <a class="text-light brand-light" href="https://headline-inc.com">HEADLINE</a></h4><div className="flex-start">
+  <a
+    target="_blank"
+    href="https://algocloud.org"
+    rel="noreferrer"
+    className="shoulder__item"
+    href="https://github.com/headline-design"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={16}
+      height={16}
+      className="bi bi-cloud-fill"
+      viewBox="0 0 16 16"
+    >
+      <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z" />
+    </svg>
+  </a>
+  <a
+href="https://pipeline-ui.com"
+    target="_blank"
+    rel="noreferrer"
+    className="shoulder__item ml-2"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={16}
+      height={16}
+      className="bi bi-gear-fill"
+      viewBox="0 0 16 16"
+    >
+      <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
+    </svg>
+  </a>
+  <a target="_blank" 
+  href="https://daotools.org"
+  rel="noreferrer" className="shoulder__item ml-2">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={16}
+    height={16}
+    className="bi bi-wrench-adjustable-circle-fill"
+    viewBox="0 0 16 16"
+  >
+    <path d="M6.705 8.139a.25.25 0 0 0-.288-.376l-1.5.5.159.474.808-.27-.595.894a.25.25 0 0 0 .287.376l.808-.27-.595.894a.25.25 0 0 0 .287.376l1.5-.5-.159-.474-.808.27.596-.894a.25.25 0 0 0-.288-.376l-.808.27.596-.894Z" />
+    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16Zm-6.202-4.751 1.988-1.657a4.5 4.5 0 0 1 7.537-4.623L7.497 6.5l1 2.5 1.333 3.11c-.56.251-1.18.39-1.833.39a4.49 4.49 0 0 1-1.592-.29L4.747 14.2a7.031 7.031 0 0 1-2.949-2.951ZM12.496 8a4.491 4.491 0 0 1-1.703 3.526L9.497 8.5l2.959-1.11c.027.2.04.403.04.61Z" />
+  </svg>
+</a>
 
-
-{" "}
-
-<a href="https://pipeline-ui.com"   target="_blank"
-  rel="noreferrer" class="btn-pills btn btn-light mr-2 mb-2 ">⚙️ PIPELINE-UI</a>
-<a href="https://daotools.org"   target="_blank"
-  rel="noreferrer" class="btn-pills btn btn-light mr-2 mb-2 tools-style">⚙️ DAO Tools</a>
-
-
-<a href="https://algocloud.org"   target="_blank"
-  rel="noreferrer" class="btn-pills btn btn-light mr-2 mb-2 cloud-style ">☁️ algocloud</a>
+  <a 
+  href="https://twitter.com/headline_crypto"
+  target="_blank"
+  rel="noreferrer" className="shoulder__item ml-2">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={16}
+      height={16}
+      className="bi bi-twitter"
+      viewBox="0 0 16 16"
+    >
+      <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z" />
+    </svg>
+  </a>
+  
 </div>
-            </div>
+</div>
+            
+      
 
            
       </div >

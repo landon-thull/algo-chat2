@@ -13883,7 +13883,9 @@ p.left-line {
         padding-left: 15px !important;
     }
     h4.built-by {
-        margin-bottom: 0.8rem;
+        margin-bottom: 0px;
+        margin-right: 0.8rem;
+        font-size: 1.2rem;
     }
 }
 
@@ -13894,11 +13896,19 @@ p.left-line {
         align-items: center;
         flex-direction: row-reverse;
     }
+    h4.built-by {
+        margin-bottom: 0px;
+        margin-right: 0.8rem;
+        font-size: 1.2rem;
+    }
 }
 
 @media (max-width:430px) {
 a.btn-pills.btn.btn-light.mr-2.mb-2.tools-style {
     display: none;
+}
+h4.built-by {
+display:none
 }
 }
 
@@ -13907,7 +13917,8 @@ a.btn-pills.btn.btn-light.mr-2.mb-2 {
 }
 
 h4.built-by {
-    margin-bottom: 0.8rem;
+    margin-bottom: 0px;
+    margin-right: 0.8rem;
 }
 
 .cloud-style {
@@ -13915,3 +13926,9 @@ h4.built-by {
     background-color: #e2e6ea;
     border-color: #dae0e5;
 }
+
+.right-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} 
