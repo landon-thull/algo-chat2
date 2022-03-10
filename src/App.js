@@ -738,6 +738,12 @@ this.setState({
                 HEADLINE
               </a>
             </p>
+        <p>
+             Learn about{" "}
+              <a className="text-light brand-light" href="https://daotools.org">
+                DAO Tools
+              </a>
+            </p>
       </div >
 
     );
