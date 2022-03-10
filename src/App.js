@@ -19,8 +19,8 @@ var friendsTxid = ""
 var canvasId = 2
 
 var friendsFetched = false
-
-var mynet = (Pipeline.main) ? "MainNet" : "TestNet";
+var showDetail = false;
+var mynet = (Pipeline.main) ? "MainNet🔴" : "TestNet🚧";
 
 const tealNames = ["chat"]
 
@@ -33,6 +33,16 @@ const previousPosts = {}
 var friends = []
 
 var refresh = false
+
+function show() {
+  showDetail = !showDetail
+  if (showDetail) {
+
+    document.getElementById("containerz").style.display = "block"
+  }
+  else {
+    document.getElementById("containerz").style.display = "none"  }
+}
 
 async function getContracts() {
   for (let i = 0; i < tealNames.length; i++) {
@@ -151,11 +161,11 @@ class App extends Component {
   setNet = (event) => {
     if (event.target.value === "TestNet") {
       Pipeline.main = false
-      this.setState({ net: "TestNet" })
+      this.setState({ net: "TestNet🚧" })
     }
     else {
       Pipeline.main = true
-      this.setState({ net: "MainNet" })
+      this.setState({ net: "MainNet🔴" })
     }
 
   }
@@ -352,9 +362,9 @@ class App extends Component {
 
         let myId = document.getElementById("appid").value
 
-        let messageClass = "others"
+        let messageClass = "others alert text-left alert-info "
 
-        if (myId === appId) { messageClass = "me" }
+        if (myId === appId) { messageClass = "alert text-left alert-success me" }
 
         addTableRow('<div id="upperMessage" class="upperMessage-' + messageClass + '"><img width="30px" class="avatar-' + messageClass + '" src="' + url + '"></img><span class="messageName">' + details.name + "_" + appId + '</span></div><div class="messageText">' + " " + details.message + "</div>", messageClass)
 
@@ -369,6 +379,7 @@ class App extends Component {
     }
     catch (error) { console.log(error) }
   }
+  
 
   startRefresh = () => {
     this.check()
@@ -446,6 +457,8 @@ class App extends Component {
     }
   }
 
+  
+
   options = () => {
     toggled = !toggled
     if (toggled) {
@@ -463,61 +476,48 @@ class App extends Component {
     const loadingSpin = this.state.loading ? "App-logo Spin" : "App-logo";
     return (
       <div align="center">
-        <nav className="py-2 bg-light border-bottom">
-          <div className="container d-flex flex-wrap">
-            <ul className="nav me-auto">
-              <li className="nav-item"><a href="#" className="nav-link link-dark px-2 active" aria-current="page">Home</a></li>
-              <li className="nav-item"><a href="#" className="nav-link link-dark px-2">Features</a></li>
-              <li className="nav-item"><a href="#" className="nav-link link-dark px-2">Pricing</a></li>
-              <li className="nav-item"><a href="#" className="nav-link link-dark px-2">FAQs</a></li>
-              <li className="nav-item"><a href="#" className="nav-link link-dark px-2">About</a></li>
-            </ul>
-            <ul className="nav">
-              <li className="nav-item"><a href="#" className="nav-link link-dark px-2">Login</a></li>
-              <li className="nav-item"><a href="#" className="nav-link link-dark px-2">Sign up</a></li>
-            </ul>
-          </div>
-        </nav>
         <header className="py-3 mb-4 border-bottom">
-          <div className="container d-flex flex-wrap justify-content-center">
-            <a href="/" className="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
-              <p>{"Connected Address: " + this.state.myAddress}</p>
-            </a>
-            <form className="col-12 col-lg-auto mb-3 mb-lg-0">
+        <div class="App container bg-light shadow  app-header-2">
+        <div className=" d-flex align-items-center mb-lg-0 me-lg-auto text-dark text-decoration-none badge-net">
 
-              <p>{"Balance: " + this.state.balance}</p>
-            </form>
-          </div>
-
-          <select className="form-select" onClick={this.setNet}>
+        <h2 className=" badge bg-warning form-select form-btn">{this.state.net}</h2>
+        </div>
+        <div className="d-flex align-items-center mb-lg-0 me-lg-auto text-dark text-decoration-none">
+       
+        <select className="form-select" onClick={this.setNet}>
             <option>TestNet</option>
             <option>MainNet</option>
-          </select>
-
-          <select className="form-select" onChange={this.switchConnector}>
+            </select>
+            <select className="form-select" onChange={this.switchConnector}>
             <option>myAlgoWallet</option>
             <option>WalletConnect</option>
             <option>AlgoSigner</option>
           </select>
-
-          <button className="btn btn-sm btn-bd-light mb-2 mb-md-0" onClick={this.handleConnect}>Click to Connect</button>
+        </div>
+            </div>
         </header>
-        <h2 className="px-2 badge bg-warning">{this.state.net}</h2>
+
+        <div class="App container bg-light shadow  app-header mb-4">
+            <a href="/" className="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
+            <div>{"Transaction ID: " + this.state.txID}</div>
+            </a>
+            <a href="/" className="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
+              <div>{"Connected Address: " + this.state.myAddress}</div>
+            </a>
+            </div>
+        
+        
+       
+        
         <div className="App container bg-light shadow">
           <header className="App-header">
-            <img src={logo} className={loadingSpin} alt="logo" />
             <h1 className="App-title">
               Algo Chat
               <span className="px-2" role="img" aria-label="Chat">
                 💬
               </span>
             </h1>
-            <p>
-              Brought to you by{" "}
-              <a className="text-light" href="https://headline-inc.com">
-                HEADLINE
-              </a>
-            </p>
+            
           </header>
 
           <div className="row">
@@ -525,54 +525,80 @@ class App extends Component {
               <h6>Say something about Algorand</h6>
               <div className="comment-form" />
               <div ><div className="form-group"></div><div className="form-group"><textarea className="form-control" placeholder="🤬 Your Comment" name="message" rows="5" spellCheck="false" type="text" id="postMessage"></textarea></div><div className="alert alert-danger" style={{ display: "none" }}>Something went wrong while submitting form.</div><div className="form-group">
-                <button className="btn btn-primary form-group" onClick={this.post}>Comment ➤</button></div></div>
+                <button className="btn btn-primary form-group" onClick={this.post}>Comment ➤</button>
+                </div></div>
             </div>
-            <div className="col-8  pt-3 bg-white">
+            <div className="col-8  pt-3 bg-white comment-list">
               <div className="comment-list"
                 loading={this.state.loading}
                 comments={this.state.comments}
               />
-              <div className="comment-list"><h5 className="text-muted mb-4"><span className="badge badge-success">{this.state.mlength}</span> Comment</h5><div className="alert text-center alert-info">Be the first to comment</div> <div><table width="100%" className="media-body p-2 shadow-sm rounded bg-light border rounded" id="chatLog"></table></div></div></div><footer className="App-footer"><button className="btn btn-bd-light" onClick={this.startRefresh}>Refresh</button>
-              <canvas id="canvas2" height="30px" width="30px" style={{ display: "none" }}></canvas>
-              <div>{"Transaction ID: " + this.state.txID}</div>
-            </footer></div>
-        </div>
-        <div className="App container ">
-          <div className="bd-example">
-            <table className="table" width="100%">
-              <td>
-              </td>
-              <tbody>
-                <tr>
-                  <td width="50%">
-                    <h1>ACTIONS</h1>
+              <div className="comment-list"><h5 className="text-muted mb-4"><span className="badge badge-success">{this.state.mlength}</span> Comment</h5><div className="comments-list"><div className="alert text-center alert-info">Be the first to comment</div> <div ><table width="100%" className="" id="chatLog"></table></div></div></div></div><footer className="App-footer"> 
+              
+              <div class="col">
+              <div class="row">
+              <button className="form-select form-btn" onClick={this.handleConnect}>Click to Connect</button>
+              <button  className="btn btn-bd-light" onClick={this.startRefresh}>Refresh</button>
+
+              </div>
+              </div>
+              <div class="row">
+              <div class="col">
+              
+              <button className="btn btn-bd-light" onClick={show} class="btn btn-primary form-group">⚙️ Expand Controls</button>
+              </div></div>
+              
+              <div id="containerz-1">
+              
+            <canvas id="canvas2" height="30px" width="30px" style={{ display: "none" }}></canvas>
+
+
+          
+              
+              
+              </div>
+              <div id="containerz" className="App container actions ">
+          <div className="col footer-2">
+
+                  <div className="bl-1" width="50%">
                     <button className="btn btn-sm btn-bd-light mb-2 mb-md-0" onClick={this.deploy}>Deploy Contract</button>
                     <button className="btn btn-sm btn-bd-light mb-2 mb-md-0" onClick={this.optIn}>Opt In</button>
                     <input className="form-control ds-input" placeholder="App Id" id="appid" type="number"></input>
                     <input id="userName" className="form-control" placeholder="😎 Your Name" name="name" type="text" />
-                    <button onClick={this.changeName}>Change Name</button>
-                  </td>
-                  <td width="50%">
-
-                    <br></br>
-
                     <p>{"Application Address: " + this.state.appAddress}</p>
-                    <br></br><br></br>
+                    <button className="btn btn-success" onClick={this.changeName}>Change Name</button>
+                    <p>Change Profile Pic</p>
                     <button className="btn btn-danger" onClick={this.delete}>Delete App</button>
-                    <h3>Change Profile Pic</h3>
                     <input className="form-control ds-input" type="text" id="picAddress" placeholder="txid of pic"></input>
                     <button className="btn btn-sm btn-bd-light mb-2 mb-md-0" onClick={this.changePic}>Fuse</button>
-
+                  </div>
+                  <div className="bl-2" width="50%">
+                  <h3>My Friends:</h3>
+                    <p>{this.state.list}</p>
                     <input className="form-control ds-input" type="text" id="addFriend" placeholder="friend's app id"></input>
                     <button className="btn btn-sm btn-bd-light mb-2 mb-md-0" onClick={this.addFriend}>Add Friend</button>
-                    <h3>My Friends:</h3>
-                    <p>{this.state.list}</p>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+
+                  
+
+                   
+                    <br></br><br></br>
+                   
+                    
+
+
+                   
+                  </div>
           </div>
         </div>
+            </footer></div>
+        </div>
+        <p>
+              Brought to you by{" "}
+              <a className="text-light" href="https://headline-inc.com">
+                HEADLINE
+              </a>
+            </p>
+        
       </div >
 
     );

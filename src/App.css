@@ -7,6 +7,143 @@
     height: 80px;
 }
 
+img.avatar-others {
+    border-radius: 0.375rem;
+    margin-right: 0.5rem;
+}
+
+.form-btn {
+    height: 2.5rem;
+}
+
+td.alert.text-left.alert-success.me {
+    width: 100% !important;
+}
+
+.App.container.bg-light.shadow.app-header {
+    box-shadow: none !important;
+    margin-bottom: 0rem;
+    margin-top: 0rem;
+    padding-top: 0rem;
+    padding-bottom: 0rem;
+}
+
+App {
+    padding-top: 1rem;
+    margin: 2rem auto;
+    border-radius: 0.375rem !important;
+}
+
+@media (max-width: 767px){
+    .App.container.bg-light.shadow.app-header-2{
+        flex-flow: wrap !important;
+    }
+    h2.badge.bg-warning.form-select.form-btn {
+        width: 100% !important;
+        margin-bottom: 1rem !important;
+    }
+    .d-flex.align-items-center.mb-lg-0.me-lg-auto.text-dark.text-decoration-none.badge-net {
+        width: 100%;
+    }
+    
+}
+
+div#containerz {
+    border: 1px solid grey;
+}
+
+.bl-1 {
+    border-right-style: solid;
+    border-width: 1px;
+    padding-right: 2rem;
+    height: 100%;
+}
+
+.bl-2 {
+    padding-left: 2rem;
+}
+
+.col.footer-2 {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    align-content: flex-start;
+}
+
+.table td, .table th {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e600;
+}
+
+button.form-select.form-btn {
+    white-space: nowrap;
+    background-image: none;
+    padding-right: 0.75rem;
+    margin-right: 0.5rem;
+}
+
+.w-100.w-50.d-flex.align-items-center.mb-3.mb-lg-0.me-lg-auto.text-dark.text-decoration-none.badge-net {
+    margin-bottom: 0px !important;
+}
+
+h2.badge.bg-warning.form-select.form-btn {
+    margin-bottom: 0px;
+}
+
+button.form-select.form-btn {
+        white-space: nowrap;
+        background-image: none;
+        padding-right: 0.75rem;
+        margin-left: 1rem;
+}
+
+.comments-list {
+    max-height: 500px;
+    overflow-y: scroll;
+    padding: 1rem;
+    padding-left: 0rem;
+}
+
+select.form-select {
+    margin-left: 0.5em;
+}
+
+h2.badge.bg-warning.form-select.form-btn {
+    font-size: 1.2rem !important;
+    line-height: 1.5rem !important;
+    background-image: none;
+    
+}
+
+.App.container.bg-light.shadow.app-header-2 {
+    box-shadow: none !important;
+    margin-bottom: 0rem;
+    margin-top: 0rem;
+    padding-top: 0rem;
+    padding-bottom: 0rem;
+    display: flex;
+    justify-content: space-between;
+    background-color: #0000 !important;
+    flex-flow: wrap;
+}
+
+footer.App-footer {
+    display: flex;
+    flex-direction: column;
+}
+
+.App {
+    padding-top: 1rem;
+    margin: 2rem auto;
+    border-radius: 0.375rem;
+}
+
+.App.container.actions {
+    display: none;
+}
 .Spin {
     animation: App-logo-spin infinite 2s linear;
 }

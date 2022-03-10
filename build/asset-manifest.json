@@ -11,12 +11,12 @@
     "static/js/3.a7e8d0a0.chunk.js.map": "/static/js/3.a7e8d0a0.chunk.js.map",
     "index.html": "/index.html",
     "static/css/main.09ad02f4.chunk.css.map": "/static/css/main.09ad02f4.chunk.css.map",
-    "static/js/2.3a5dcbbd.chunk.js.LICENSE.txt": "/static/js/2.3a5dcbbd.chunk.js.LICENSE.txt",
+    "static/js/2.4a3c6789.chunk.js.LICENSE.txt": "/static/js/2.4a3c6789.chunk.js.LICENSE.txt",
     "static/media/logo.svg": "/static/media/logo.34786464.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.7c11f0b8.js",
-    "static/js/2.3a5dcbbd.chunk.js",
+    "static/js/runtime-main.f8d0be8b.js",
+    "static/js/2.4a3c6789.chunk.js",
     "static/css/main.09ad02f4.chunk.css",
     "static/js/main.bd5703c6.chunk.js"
   ]
