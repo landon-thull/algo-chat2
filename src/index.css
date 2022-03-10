@@ -7,6 +7,8 @@ body {
   -moz-osx-font-smoothing: grayscalee
 }
 
+
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -35,3 +37,14 @@ table {
   font-size: .875rem;
   border-radius: 0.2rem;
 }
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+a.text-light.brand-light {
+  text-decoration: underline;
+  color: blue !important;
+}
+
