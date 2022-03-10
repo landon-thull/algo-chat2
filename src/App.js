@@ -180,7 +180,9 @@ class App extends Component {
       messages: [],
       list: [],
       toggled: "block",
-      mlength:0
+      mlength:0,
+      myUrl: "",
+      txidUrl:""
     }
   }
 
@@ -211,6 +213,17 @@ class App extends Component {
   handleConnect = () => {
     Pipeline.connect(myAlgoWallet).then(
       data => {
+        let url = ""
+
+        if (Pipeline.main) {
+          url = "https://algoexplorer.io/address"
+        }
+        else {
+          url = "https://testnet.algoexplorer.io/address"
+        }
+this.setState({
+  myUrl: url + "/"+ data
+})
         this.setState({ myAddress: data });
         setInterval(() => this.fetchBalance(this.state.myAddress), 5000)
       }
@@ -235,6 +248,7 @@ class App extends Component {
   delete = async () => {
     Pipeline.deleteApp(document.getElementById("appid").value).then(data => {
       this.setState({ txID: data })
+      this.makeTxidClick(data)
     })
   }
 
@@ -245,6 +259,7 @@ class App extends Component {
     args.push("register")
     Pipeline.optIn(appId, args).then(data => {
       this.setState({ txID: data });
+      this.makeTxidClick(data)
 
     })
   }
@@ -258,7 +273,8 @@ class App extends Component {
     alert(pictx)
     console.log(pictx)
 
-    Pipeline.appCall(appId, ["pic", pictx]).then(data => { this.setState({ txID: data }) })
+    Pipeline.appCall(appId, ["pic", pictx]).then(data => { this.setState({ txID: data })
+    this.makeTxidClick(data) })
   }
 
   changeName = async () => {
@@ -269,7 +285,8 @@ class App extends Component {
     let name = document.getElementById("userName").value
     console.log(name)
 
-    Pipeline.appCall(appId, ["name", name]).then(data => { this.setState({ txID: data }) })
+    Pipeline.appCall(appId, ["name", name]).then(data => { this.setState({ txID: data }) 
+    this.makeTxidClick(data)})
   }
 
   fund = async () => {
@@ -277,7 +294,8 @@ class App extends Component {
     let appAddress = algosdk.getApplicationAddress(parseInt(appId))
     let famt = parseInt(document.getElementById("fundAmt").value)
     Pipeline.appCallWithTxn(appId, ["fund"], appAddress, famt, "funding", 0, [appAddress]).then(
-      data => { this.setState({ txID: data }) })
+      data => { this.setState({ txID: data })
+      this.makeTxidClick(data) })
   }
 
   deposit = async () => {
@@ -285,7 +303,8 @@ class App extends Component {
     let appAddress = algosdk.getApplicationAddress(parseInt(appId))
     let depositAmt = parseInt(document.getElementById("depAmt").value)
     Pipeline.appCallWithTxn(appId, ["deposit"], appAddress, depositAmt, "depositing", 0, [appAddress]).then(
-      data => { this.setState({ txID: data }) })
+      data => { this.setState({ txID: data })
+      this.makeTxidClick(data)})
   }
 
   modifyTeal = () => {
@@ -326,11 +345,25 @@ class App extends Component {
 
       Pipeline.appCall(appId, ["chat", myMessage]).then(data => {
         this.setState({ txID: data })
+        this.makeTxidClick(data)
         this.startRefresh()
       })
     }
   }
+  makeTxidClick = (txid) => {
 
+    let url = ""
+    
+    if (Pipeline.main){
+      url = "https://algoexplorer.io/tx/"
+    }
+    else{
+      url = "https://testnet.algoexplorer.io/tx/"
+    }
+    
+    this.setState({txidUrl:url + txid})
+    
+    }
   readGlobal = async (appId) => {
     try {
       let data = await Pipeline.readGlobalState(appId)
@@ -341,6 +374,9 @@ class App extends Component {
         message: "",
         picData: ""
       }
+
+
+        
 
       console.log("App Data")
       console.log(data)
@@ -511,7 +547,7 @@ class App extends Component {
   }
 
   render() {
-    const loadingSpin = this.state.loading ? "App-logo Spin" : "App-logo";
+
     return (
       <div align="center">
         <header className="py-3 mb-4 border-bottom">
@@ -552,10 +588,10 @@ class App extends Component {
         </header>
 
         <div className="App container bg-light shadow  app-header mb-4">
-            <a href="/" className="d-flex align-items-center mt-2 mb-2 me-lg-auto text-dark text-decoration-none">
+            <a href={this.state.txidUrl} className="d-flex align-items-center mt-2 mb-2 me-lg-auto text-dark text-decoration-none">
             <div>{"Transaction ID: " + this.state.txID}</div>
             </a>
-            <a href="/" className="d-flex align-items-center mt-2 mb-2 me-lg-auto text-dark text-decoration-none">
+            <a target="_blank"  href={this.state.myUrl} className="d-flex align-items-center mt-2 mb-2 me-lg-auto text-dark text-decoration-none">
               <div>{"Connected Address: " + this.state.myAddress}</div>
             </a>
             </div>
@@ -643,7 +679,7 @@ class App extends Component {
                     <button className="btn btn-success  btn-pills  btn-pills btn btn-light mb-2 mr-2" onClick={this.changeName}>Change Name</button>
                     <label>Change Profile Pic</label>
                     <input className="form-control ds-input mb-3" type="text" id="picAddress" placeholder="txid of pic"></input>
-                    <button className="btn-pills btn btn-sm btn-bd-light mb-3 mb-md-0" onClick={this.changePic}>Fuse</button>
+                    <button className="btn-pills btn btn-sm btn-bd-light mb-3 mb-md-0" onClick={this.changePic}>Update PFP</button>
                     <button className="btn-pills btn btn-danger mt-3 mb-3" onClick={this.delete}>Delete App</button>
                     </div>
                     
