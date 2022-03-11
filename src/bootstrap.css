@@ -13932,3 +13932,8 @@ h4.built-by {
     justify-content: center;
     align-items: center;
 } 
+
+.no-size {
+    height: 40px;
+    width: 40px;
+}

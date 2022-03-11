@@ -6,6 +6,7 @@ import logo from "./logo.svg";
 import "./bootstrap.css";
 import "./App.css";
 import {Svg9,Svg10} from './svgs.js'
+import Faq from './faq'
 
 
 //add app id 69417489 to input on frontend for testing without deployment
@@ -13,6 +14,8 @@ import {Svg9,Svg10} from './svgs.js'
 const myAlgoWallet = Pipeline.init();
 
 Pipeline.main = false;
+
+let storedApp = localStorage.getItem("algoChat")
 
 var toggled = true
 
@@ -181,12 +184,27 @@ class App extends Component {
       toggled: "block",
       mlength:0,
       myUrl: "",
-      txidUrl:""
+      txidUrl:"",
+      appId:""
     }
   }
 
   componentDidMount() {
     getContracts()
+    if (storedApp !== null) {
+      document.getElementById("appid").value = storedApp
+      this.setState({ appId: storedApp })
+      let url = ""
+
+      if (Pipeline.main) {
+        url = "https://algoexplorer.io/application"
+      }
+      else {
+        url = "https://testnet.algoexplorer.io/application"
+      }
+      this.setState({ appUrl: url + "/" + storedApp })
+    }
+    else { alert("You don't have a connected app yet") }
   }
 
   fetchBalance = (addr) => {
@@ -220,9 +238,10 @@ class App extends Component {
         else {
           url = "https://testnet.algoexplorer.io/address"
         }
-this.setState({
-  myUrl: url + "/"+ data
-})
+        this.setState({
+          myUrl: url + "/" + data
+        })
+
         this.setState({ myAddress: data });
         setInterval(() => this.fetchBalance(this.state.myAddress), 5000)
       }
@@ -240,12 +259,24 @@ this.setState({
 
     Pipeline.deployTeal(tealContracts[name].program, tealContracts[name].clearProgram, [0, 5, 0, 0], ["create"]).then(data => {
       document.getElementById("appid").value = data;
+      localStorage.setItem("algoChat", data)
+      this.setState({ appId: data })
+      let url = ""
+
+      if (Pipeline.main) {
+        url = "https://algoexplorer.io/application"
+      }
+      else {
+        url = "https://testnet.algoexplorer.io/application"
+      }
+      this.setState({ appUrl: url + "/" + data })
       this.setState({ appAddress: algosdk.getApplicationAddress(data) });
     })
   }
 
   delete = async () => {
     Pipeline.deleteApp(document.getElementById("appid").value).then(data => {
+      localStorage.clear()
       this.setState({ txID: data })
       this.makeTxidClick(data)
     })
@@ -549,6 +580,7 @@ this.setState({
 
     return (
       <div align="center">
+      
         <header className="py-3 mb-4 border-bottom">
         <div className="App container bg-light shadow  app-header-2">
         <div className=" d-flex align-items-center mb-lg-0 me-lg-auto text-dark text-decoration-none badge-net">
@@ -557,7 +589,7 @@ this.setState({
         </div>
         <div className="d-flex align-items-center mb-lg-0 me-lg-auto text-dark text-decoration-none">
         <div className="flex-start">
-
+        <Faq/>
         <a
   target="_blank"
   rel="noreferrer"
@@ -625,6 +657,9 @@ this.setState({
             <a target="_blank"  href={this.state.myUrl} className="d-flex align-items-center mt-2 mb-2 me-lg-auto text-dark text-decoration-none">
               <div className="address-elipse">{"Connected Address: " + this.state.myAddress}</div>
             </a>
+            <a target="_blank"  href={this.state.appUrl} className="d-flex align-items-center mt-2 mb-2 me-lg-auto text-dark text-decoration-none">
+              <div className="address-elipse">{"Connected App: " + this.state.appId}</div>
+            </a>
             </div>
         
         
@@ -676,6 +711,7 @@ this.setState({
               <button onClick={showSocial}  className="btn-pills btn btn-light mr-2 mb-2 ">😎 Friends</button>
               <button onClick={show}  className="btn-pills btn btn-light mr-2 mb-2 ">⚙️ Controls</button>
               <button  className=" btn-pills btn btn-light mb-2 " onClick={this.startRefresh}>Refresh</button>
+              
              
               </div>
               <div className="controls-row-2">
@@ -699,11 +735,10 @@ this.setState({
           <div className="col footer-2 w-100">
             <div className="flex-opt">
           <button className=" btn-pills  btn-pills btn btn-light mb-2 mr-2" onClick={this.deploy}>Deploy Contract</button>
-                    <button className="btn-pills  btn-pills btn btn-light mb-2 " onClick={this.optIn}>Opt In</button>
+                  
                     </div>
                   <div className="bl-1 w-100">
                     <div className="command-btns">
-                    <label>{"Application Address: " + this.state.appAddress}</label>
                     <input className="form-control ds-input mb-3" placeholder="App Id" id="appid" type="number"></input>
                   
                     <input id="userName" className="form-control mb-3" placeholder="😎 Your Name" name="name" type="text" />
@@ -751,7 +786,7 @@ this.setState({
         </div>
 
         </div>
-        <div class="right-row mb-4"><h4 class="built-by"> Built by <a class="text-light brand-light" href="https://headline-inc.com">HEADLINE</a></h4><div className="flex-start">
+        <div className="right-row mb-4"><h4 className="built-by"> Built by <a className="text-light brand-light" href="https://headline-inc.com">HEADLINE</a></h4><div className="flex-start">
   <a
     target="_blank"
     href="https://algocloud.org"
