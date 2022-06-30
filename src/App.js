@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Pipeline from "@pipeline-ui-2/pipeline"; //change to import Pipeline from 'Pipeline for realtime editing Pipeline index.js, and dependency to: "Pipeline": "file:..",
+//import Pipeline from "@pipeline-ui-2/pipeline"; //change to import Pipeline from 'Pipeline for realtime editing Pipeline index.js, and dependency to: "Pipeline": "file:..",
 
 import "./App.scss";
 import Sidebar from "./components/Sidebar/Sidebar";
@@ -28,7 +28,7 @@ class App extends Component {
               <button className="send">Send</button>
             </div>
           </div>
-          <div className="box friends">Testing</div>
+          <div className="box friends">friends.map</div>
           <div className="box config"></div>
         </div>
       </div>
