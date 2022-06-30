@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./Sidebar.scss";
 
-import { P2p } from "../../svg.js";
+//import { P2p } from "../../svg.js";
 
 class Sidebar extends Component {
   constructor(props) {
