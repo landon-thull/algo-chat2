@@ -4,10 +4,27 @@ import React, { Component } from "react";
 import "./App.scss";
 import Sidebar from "./components/Sidebar/Sidebar";
 
+var friends = [
+  {
+    pic: "",
+    name: "Landon",
+  },
+  {
+    pic: "",
+    name: "Ginger",
+  },
+  {
+    pic: "",
+    name: "Henry",
+  },
+];
+
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      msgLength: 0,
+    };
   }
 
   render() {
@@ -18,17 +35,37 @@ class App extends Component {
           <div className="box chat">
             <div className="section-header">
               <div className="current">
-                <div className="profile" />
+                <div className="profile"></div>
                 <p className="name">Testing</p>
               </div>
             </div>
             <div className="messages"></div>
-            <div className="chat-input">
-              <textarea minLength={3} />
-              <button className="send">Send</button>
-            </div>
+            <form className="chat-input">
+              <textarea
+                minLength={3}
+                onChange={(e) => {
+                  let msg = e.target.value;
+                  this.setState({ msgLength: msg.length });
+                  console.log(this.state.msgLength);
+                }}
+              />
+              <div className="submit-container">
+                <button type="submit" className="send">
+                  Send {this.state.msgLength}/480
+                </button>
+              </div>
+            </form>
           </div>
-          <div className="box friends">friends.map</div>
+          <div className="box friends">
+            {friends.map((props) => {
+              return (
+                <button className="friend-container">
+                  <div className="profile"></div>
+                  <p className="name">{props.name}</p>
+                </button>
+              );
+            })}
+          </div>
           <div className="box config"></div>
         </div>
       </div>
