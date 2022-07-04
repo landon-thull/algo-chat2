@@ -1,36 +1,44 @@
 import React, { Component } from "react";
-//import Pipeline from "@pipeline-ui-2/pipeline"; //change to import Pipeline from 'Pipeline for realtime editing Pipeline index.js, and dependency to: "Pipeline": "file:..",
+import Pipeline from "@pipeline-ui-2/pipeline";
 
 import "./App.scss";
-import Sidebar from "./components/Sidebar/Sidebar";
 
-var friends = [
-  {
-    pic: "",
-    name: "Landon",
-  },
-  {
-    pic: "",
-    name: "Ginger",
-  },
-  {
-    pic: "",
-    name: "Henry",
-  },
-];
+const myAlgoWallet = Pipeline.init();
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       msgLength: 0,
+      addr: "",
     };
   }
+
+  switchConnector = (e) => {
+    Pipeline.pipeConnector = e.target.value;
+    console.log(e.target.value);
+  };
+
+  handleConnect = () => {
+    Pipeline.connect(myAlgoWallet).then((data) => {
+      this.setState({ addr: data });
+      console.log(data);
+    });
+  };
 
   render() {
     return (
       <div className="App">
-        <Sidebar />
+        <div className="header">
+          <select className="wallet" onChange={this.switchConnector}>
+            <option value="myAlgoWallet">MyAlgoWallet</option>
+            <option value="WalletConnect">WalletConnect</option>
+            <option value="AlgoSigner">AlgoSigner</option>
+          </select>
+          <button className="button-primary" onClick={this.handleConnect}>
+            {this.state.addr < 5 ? "Connect Wallet" : "Connected!"}
+          </button>
+        </div>
         <div className="content">
           <div className="box chat">
             <div className="section-header">
@@ -49,23 +57,12 @@ class App extends Component {
                   console.log(this.state.msgLength);
                 }}
               />
-              <div className="submit-container">
-                <button type="submit" className="send">
-                  Send {this.state.msgLength}/480
-                </button>
-              </div>
+              <button type="submit" className="send">
+                Send
+              </button>
             </form>
           </div>
-          <div className="box friends">
-            {friends.map((props) => {
-              return (
-                <button className="friend-container">
-                  <div className="profile"></div>
-                  <p className="name">{props.name}</p>
-                </button>
-              );
-            })}
-          </div>
+          <div className="box friends"></div>
           <div className="box config"></div>
         </div>
       </div>

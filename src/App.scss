@@ -1,12 +1,24 @@
 .App {
   width: 100vw;
-  padding: 10px;
   padding-top: 25px;
   padding-bottom: 25px;
   background: #181d21;
   display: flex;
+  flex-direction: column;
   font-family: Arial, Helvetica, sans-serif;
   color: #e3e0e0;
+}
+
+.header {
+  display: flex;
+  justify-content: right;
+  margin: 15px 5em;
+
+  .wallet {
+    border: none;
+    border-radius: 5px;
+    padding: 10px 10px;
+  }
 }
 
 .content {
@@ -22,7 +34,7 @@
   border: 1px solid #2e2f36;
   margin: 25px;
   border-radius: 15px;
-  min-width: 350px;
+  min-width: 400px;
   min-height: 50vh;
   display: flex;
   flex-direction: column;
@@ -46,7 +58,7 @@
   textarea {
     padding: 5px;
     width: 85%;
-    min-height: 75px;
+    min-height: 25px;
     border: solid 1px #2e2f36;
     font-family: Arial, Helvetica, sans-serif;
     resize: none;
@@ -54,24 +66,25 @@
     outline: none;
     margin: 0;
   }
-  .submit-container {
-    display: flex;
-    flex-direction: row-reverse;
-    width: 25%;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-
-    .send {
-      width: 75%;
-      height: 100%;
-      border: none;
-      background: rgba(18, 233, 164, 1);
-      border-radius: 5px;
-      padding: 10px 5px;
-      margin-left: 5px;
+  .send {
+    background: #797ef6;
+    border: none;
+    min-height: 25px;
+    margin-right: 5px;
+    width: 10%;
+    padding: 10px;
+    border-radius: 5px;
+    :hover {
+      border: 1px solid white;
     }
   }
+}
+
+.button-primary {
+  background: #797ef6;
+  border: none;
+  border-radius: 5px;
+  margin: 0 10px;
 }
 
 .friend-container {
@@ -135,13 +148,12 @@
     min-width: 250px;
   }
   .chat-input {
-    textarea {
-      width: 90%;
-      min-height: 75px;
-    }
-    .submit-container {
-      height: 100%;
-      width: 30%;
+    flex-direction: column;
+
+    .send {
+      width: 60%;
+      margin: 0;
+      margin-top: 5px;
     }
   }
 }
