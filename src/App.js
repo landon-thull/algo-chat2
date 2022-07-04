@@ -30,14 +30,17 @@ class App extends Component {
     return (
       <div className="App">
         <div className="header">
-          <select className="wallet" onChange={this.switchConnector}>
-            <option value="myAlgoWallet">MyAlgoWallet</option>
-            <option value="WalletConnect">WalletConnect</option>
-            <option value="AlgoSigner">AlgoSigner</option>
-          </select>
-          <button className="button-primary" onClick={this.handleConnect}>
-            {this.state.addr < 5 ? "Connect Wallet" : "Connected!"}
-          </button>
+          <p className="wallet-number">WALLET: {this.state.addr}</p>
+          <div className="wallet-container">
+            <select className="wallet" onChange={this.switchConnector}>
+              <option value="myAlgoWallet">MyAlgoWallet</option>
+              <option value="WalletConnect">WalletConnect</option>
+              <option value="AlgoSigner">AlgoSigner</option>
+            </select>
+            <button className="button-primary" onClick={this.handleConnect}>
+              {this.state.addr < 5 ? "Connect Wallet" : "Connected!"}
+            </button>
+          </div>
         </div>
         <div className="content">
           <div className="box chat">
@@ -63,7 +66,11 @@ class App extends Component {
             </form>
           </div>
           <div className="box friends"></div>
-          <div className="box config"></div>
+          <div className="box config">
+            <div className="deploy">
+              <h2>Deploy to Chat</h2>
+            </div>
+          </div>
         </div>
       </div>
     );
