@@ -1,18 +1,60 @@
 import React, { Component } from "react";
 import Pipeline from "@pipeline-ui-2/pipeline";
 
+import algosdk from "algosdk";
 import "./App.scss";
 
 const myAlgoWallet = Pipeline.init();
+
+Pipeline.main = false;
+
+let storedApp = localStorage.getItem("algoChat");
+
+const tealNames = ["chat"];
+
+const tealContracts = {
+  chat: {},
+};
+
+async function getContracts() {
+  for (let i = 0; i < tealNames.length; i++) {
+    let name = tealNames[i];
+    let data = await fetch("teal/" + name + ".txt");
+    tealContracts[name].program = await data.text();
+    let data2 = await fetch("teal/" + name + " clear.txt");
+    tealContracts[name].clearProgram = await data2.text();
+  }
+}
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      txId: "",
+      appId: "",
+      appAddr: "",
       addr: "",
       net: "TestNet",
       msgLength: 0,
     };
+  }
+
+  componentDidMount() {
+    getContracts();
+
+    if (storedApp !== null) {
+      this.setState({ appId: storedApp });
+      let url = "";
+
+      if (Pipeline.main) {
+        url = "https://algoexplorer.io/application";
+      } else {
+        url = "https://testnet.algoexplorer.io/application";
+      }
+      this.setState({ appUrl: url + "/" + storedApp });
+    } else {
+      alert("You don't have a connected app yet");
+    }
   }
 
   switchConnector = (e) => {
@@ -28,7 +70,6 @@ class App extends Component {
       Pipeline.main = false;
       this.setState({ net: "TestNet" });
     }
-    console.log(this.state.net);
   };
 
   handleConnect = () => {
@@ -38,14 +79,39 @@ class App extends Component {
     });
   };
 
+  deploy = async () => {
+    let name = "chat";
+
+    Pipeline.deployTeal(
+      tealContracts[name].program,
+      tealContracts[name].clearProgram,
+      [1, 1, 0, 6],
+      ["create"]
+    ).then(async (data) => {
+      let appAddr = await algosdk.getApplicationAddress(data);
+      localStorage.setItem("algoChat", data);
+      let url = "";
+
+      if (Pipeline.main) {
+        url = "https://algoexplorer.io/application";
+      } else {
+        url = "https://testnet.algoexplorer.io/application";
+      }
+      this.setState({ appUrl: url + "/" + data });
+      this.setState({ appAddr: appAddr });
+      this.setState({ addId: data });
+
+      console.log(this.state.appAddr);
+    });
+  };
+
   render() {
     return (
       <div className="App">
         <div className="header">
-          <p className="wallet-number">WALLET: {this.state.addr}</p>
           <div className="wallet-container">
             <div className="switch-container">
-              MainNet
+              TestNet
               <label className="switch">
                 <input
                   type="checkbox"
@@ -55,7 +121,7 @@ class App extends Component {
                 />
                 <span className="slider round"></span>
               </label>
-              TestNet
+              MainNet
             </div>
             <div className="">
               <select className="wallet" onChange={this.switchConnector}>
@@ -96,6 +162,10 @@ class App extends Component {
           <div className="box config">
             <div className="deploy">
               <h2>Deploy to Chat</h2>
+              <p>{this.state.appId}</p>
+              <button className="button-primary" onClick={() => this.deploy()}>
+                {this.state.appId.length > 0 ? "Deployed!" : "Deploy"}
+              </button>
             </div>
           </div>
         </div>
