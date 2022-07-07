@@ -129,7 +129,10 @@ class App extends Component {
                 <option value="WalletConnect">WalletConnect</option>
                 <option value="AlgoSigner">AlgoSigner</option>
               </select>
-              <button className="button-primary" onClick={this.handleConnect}>
+              <button
+                className="button-primary button"
+                onClick={this.handleConnect}
+              >
                 {this.state.addr < 5 ? "Connect Wallet" : "Connected!"}
               </button>
             </div>
@@ -142,6 +145,10 @@ class App extends Component {
                 <div className="profile"></div>
                 <p className="name">Testing</p>
               </div>
+              <div className="app-info">
+                <p>App ID: {this.state.appId}</p>
+                <p>Transaction: {this.state.txId}</p>
+              </div>
             </div>
             <div className="messages"></div>
             <form className="chat-input">
@@ -153,7 +160,7 @@ class App extends Component {
                   console.log(this.state.msgLength);
                 }}
               />
-              <button type="submit" className="send">
+              <button type="submit" className="send button">
                 Send
               </button>
             </form>
@@ -162,8 +169,10 @@ class App extends Component {
           <div className="box config">
             <div className="deploy">
               <h2>Deploy to Chat</h2>
-              <p>{this.state.appId}</p>
-              <button className="button-primary" onClick={() => this.deploy()}>
+              <button
+                className="button-primary button"
+                onClick={() => this.deploy()}
+              >
                 {this.state.appId.length > 0 ? "Deployed!" : "Deploy"}
               </button>
             </div>
