@@ -10,10 +10,11 @@ Pipeline.main = false;
 
 let storedApp = localStorage.getItem("algoChat");
 
-const tealNames = ["chat"];
+const tealNames = ["profile", "p2p"];
 
 const tealContracts = {
-  chat: {},
+  profile: {},
+  p2p: {},
 };
 
 async function getContracts() {
@@ -23,6 +24,7 @@ async function getContracts() {
     tealContracts[name].program = await data.text();
     let data2 = await fetch("teal/" + name + " clear.txt");
     tealContracts[name].clearProgram = await data2.text();
+    console.log(tealContracts);
   }
 }
 
@@ -31,11 +33,13 @@ class App extends Component {
     super(props);
     this.state = {
       txId: "",
+      txIdUrl: "",
       appId: "",
       appAddr: "",
       addr: "",
       net: "TestNet",
       msgLength: 0,
+      program: "",
     };
   }
 
@@ -52,8 +56,6 @@ class App extends Component {
         url = "https://testnet.algoexplorer.io/application";
       }
       this.setState({ appUrl: url + "/" + storedApp });
-    } else {
-      alert("You don't have a connected app yet");
     }
   }
 
@@ -79,30 +81,61 @@ class App extends Component {
     });
   };
 
-  deploy = async () => {
-    let name = "chat";
+  deployProfile = async () => {
+    let name = "profile";
+    if (this.state.addr.length !== 58) {
+      alert("You need to connect your wallet first!");
+    } else {
+      Pipeline.deployTeal(
+        tealContracts[name].program,
+        tealContracts[name].clearProgram,
+        [0, 4, 0, 0],
+        ["create"]
+      ).then(async (data) => {
+        localStorage.setItem("algoChat", data);
+        let appAddr = await algosdk.getApplicationAddress(data);
+        let url = "";
 
-    Pipeline.deployTeal(
-      tealContracts[name].program,
-      tealContracts[name].clearProgram,
-      [1, 1, 0, 6],
-      ["create"]
-    ).then(async (data) => {
-      let appAddr = await algosdk.getApplicationAddress(data);
-      localStorage.setItem("algoChat", data);
-      let url = "";
+        if (Pipeline.main) {
+          url = "https://algoexplorer.io/application";
+        } else {
+          url = "https://testnet.algoexplorer.io/application";
+        }
+        this.setState({ appUrl: url + "/" + data });
+        this.setState({ appAddr: appAddr });
+        this.setState({ addId: data });
 
-      if (Pipeline.main) {
-        url = "https://algoexplorer.io/application";
-      } else {
-        url = "https://testnet.algoexplorer.io/application";
-      }
-      this.setState({ appUrl: url + "/" + data });
-      this.setState({ appAddr: appAddr });
-      this.setState({ addId: data });
+        console.log(this.state.appAddr);
+      });
+    }
+  };
 
-      console.log(this.state.appAddr);
-    });
+  changeName = async () => {
+    let appId = this.state.appId;
+
+    let name = await document.getElementById("userName").value;
+    console.log(name);
+
+    if (this.state.addr.length < 58) {
+      alert("Please connect your wallet!");
+    } else {
+      Pipeline.appCall(appId, ["name", toString(name)]).then((data) => {
+        this.setState({ txID: data });
+        this.makeTxidClick(data);
+      });
+    }
+  };
+
+  makeTxidClick = (txid) => {
+    let url = "";
+
+    if (Pipeline.main) {
+      url = "https://algoexplorer.io/tx/";
+    } else {
+      url = "https://testnet.algoexplorer.io/tx/";
+    }
+
+    this.setState({ txidUrl: url + txid });
   };
 
   render() {
@@ -167,14 +200,31 @@ class App extends Component {
           </div>
           <div className="box friends"></div>
           <div className="box config">
-            <div className="deploy">
+            <div className="deploy section">
               <h2>Deploy to Chat</h2>
               <button
-                className="button-primary button"
-                onClick={() => this.deploy()}
+                className="button-config"
+                onClick={() => this.deployProfile()}
               >
                 {this.state.appId.length > 0 ? "Deployed!" : "Deploy"}
               </button>
+            </div>
+            <div className="section">
+              <h2>Configs</h2>
+              <div className="config-section">
+                <input
+                  className="chat-input"
+                  placeholder="Your Name"
+                  id="userName"
+                  name="name"
+                />
+                <button
+                  className="button-config"
+                  onClick={() => this.changeName()}
+                >
+                  Change Name
+                </button>
+              </div>
             </div>
           </div>
         </div>

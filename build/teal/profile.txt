@@ -1,0 +1,114 @@
+#pragma version 5
+//check for creation
+txn ApplicationID
+int 0
+== 
+bz not_creation
+byte "Creator"
+txn Sender
+app_global_put
+int 1
+return
+not_creation:
+//check for deletion
+int DeleteApplication
+txn OnCompletion
+==
+bz not_deletion
+//check deletor is creator
+byte "Creator"
+app_global_get
+txn Sender
+==
+bz failed
+int 1
+return
+not_deletion:
+//check for update
+int UpdateApplication
+txn OnCompletion
+==
+bz not_update
+//check updater is creator
+byte "Creator"
+app_global_get
+txn Sender
+==
+bz failed
+int 1
+return
+not_creation:
+//check for closeout
+int CloseOut
+txn OnCompletion
+==
+bnz close_out
+//register
+txna ApplicationArgs 0
+byte "register"
+==
+bnz register
+//changeName
+txna ApplicationArgs 0
+byte "name"
+==
+bnz changeName
+//changePic
+txna ApplicationArgs 0 
+byte "pic"
+==
+bnz changePic
+//addFriends
+txna ApplicationArgs 0
+byte "friends"
+==
+bnz addFriends
+byte "Creator"
+app_global_get
+txn Sender
+==
+bz failed
+int 1
+return
+changeName:
+byte "Creator"
+app_global_get
+txn Sender
+==
+bz failed
+byte "name"
+txna ApplicationArgs 1
+app_global_put
+int 1
+return
+changePic:
+byte "Creator"
+app_global_get
+txn Sender
+==
+bz failed
+byte "pic"
+txna ApplicationArgs 1
+app_global_put
+int 1
+return
+addFriends:
+byte "Creator"
+app_global_get
+txn Sender
+==
+bz failed
+byte "friends"
+txna ApplicationArgs 1
+app_global_put
+int 1
+return
+register:
+int 1
+return
+failed:
+int 0 
+return
+finished:
+int 1
+return

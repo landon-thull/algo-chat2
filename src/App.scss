@@ -13,7 +13,7 @@
 .header {
   display: flex;
   justify-content: right;
-  width: 70%;
+  width: 80%;
 }
 
 .wallet {
@@ -28,7 +28,7 @@
 }
 
 .content {
-  width: 75%;
+  width: 85%;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -73,6 +73,17 @@
   }
 }
 
+input {
+  padding: 5px;
+  width: auto;
+  border: solid 1px #2e2f36;
+  font-family: Arial, Helvetica, sans-serif;
+  resize: none;
+  border-radius: 5px;
+  outline: none;
+  margin: 0;
+}
+
 .chat-input {
   border-top: solid 1px #2e2f36;
   padding: 10px;
@@ -110,6 +121,14 @@
   border-radius: 5px;
   margin: 0 10px;
   padding: 12px 10px;
+}
+
+.button-config {
+  background: #797ef6;
+  border: none;
+  border-radius: 5px;
+  padding: 12px 10px;
+  margin-top: 10px;
 }
 
 .config {
@@ -219,11 +238,29 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
+.section {
+  margin-left: 15px;
+  margin-bottom: 15px;
+}
+
 /*Media Queries*/
 @media (max-width: 968px) {
   .wallet-number {
     display: none;
   }
+
+  .section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .config-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .content {
     flex-direction: column;
     align-items: center;
