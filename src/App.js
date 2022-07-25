@@ -32,8 +32,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      txId: "",
-      txIdUrl: "",
+      txID: "",
+      txIDUrl: "",
       appId: "",
       appAddr: "",
       addr: "",
@@ -117,10 +117,28 @@ class App extends Component {
     console.log(name);
 
     if (this.state.addr.length < 58) {
-      alert("Please connect your wallet!");
+      alert("Please connect your wallet first");
     } else {
       Pipeline.appCall(appId, ["name", toString(name)]).then((data) => {
-        this.setState({ txID: data });
+        let shortTxid = data.slice(0, 4) + "...";
+        this.setState({ txID: shortTxid });
+        this.makeTxidClick(data);
+      });
+    }
+  };
+
+  changePic = async () => {
+    let appId = this.state.appId;
+
+    let pic = await document.getElementById("profilePic").value;
+    console.log(pic);
+
+    if (this.state.addr.length < 58) {
+      alert("Please connect your wallet first");
+    } else {
+      Pipeline.appCall(appId, ["pic", pic]).then((data) => {
+        let shortTxid = data.slice(0, 4) + "...";
+        this.setState({ txID: shortTxid });
         this.makeTxidClick(data);
       });
     }
@@ -180,7 +198,7 @@ class App extends Component {
               </div>
               <div className="app-info">
                 <p>App ID: {this.state.appId}</p>
-                <p>Transaction: {this.state.txId}</p>
+                <p>Transaction: {this.state.txID}</p>
               </div>
             </div>
             <div className="messages"></div>
@@ -221,6 +239,20 @@ class App extends Component {
                 <button
                   className="button-config"
                   onClick={() => this.changeName()}
+                >
+                  Change Name
+                </button>
+              </div>
+              <div className="config-section">
+                <input
+                  className="chat-input"
+                  placeholder="Profile Pic txID"
+                  id="profilePic"
+                  name="pic"
+                />
+                <button
+                  className="button-config"
+                  onClick={() => this.changePic()}
                 >
                   Change Name
                 </button>
