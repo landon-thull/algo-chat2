@@ -32,6 +32,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentChat: "",
+
       txID: "",
       txIDUrl: "",
       appId: "",
@@ -143,6 +145,8 @@ class App extends Component {
       });
     }
   };
+
+  addFriend = () => {};
 
   makeTxidClick = (txid) => {
     let url = "";
