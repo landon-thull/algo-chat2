@@ -86,7 +86,7 @@ class App extends Component {
   deployProfile = async () => {
     let name = "profile";
     if (this.state.addr.length !== 58) {
-      alert("You need to connect your wallet first!");
+      alert("Please connect your wallet first!");
     } else {
       Pipeline.deployTeal(
         tealContracts[name].program,
@@ -222,45 +222,44 @@ class App extends Component {
           </div>
           <div className="box friends"></div>
           <div className="box config">
-            <div className="deploy section">
-              <h2>Deploy to Chat</h2>
+            <div className="parent">
+              <h2>Profile Contract</h2>
               <button
                 className="button-config"
                 onClick={() => this.deployProfile()}
               >
-                {this.state.appId.length > 0 ? "Deployed!" : "Deploy"}
+                {this.state.appId.length > 1 ? "Deployed!" : "Deploy"}
               </button>
-            </div>
-            <div className="section">
               <h2>Configs</h2>
-              <div className="config-section">
+              <div className="setting">
                 <input
-                  className="chat-input"
-                  placeholder="Your Name"
+                  className="config-input"
+                  placeholder="Name"
                   id="userName"
-                  name="name"
                 />
                 <button
-                  className="button-config"
+                  className="button-primary"
                   onClick={() => this.changeName()}
                 >
                   Change Name
                 </button>
               </div>
-              <div className="config-section">
+              <div className="setting">
                 <input
-                  className="chat-input"
+                  className="config-input"
                   placeholder="Profile Pic txID"
                   id="profilePic"
-                  name="pic"
                 />
                 <button
-                  className="button-config"
+                  className="button-primary"
                   onClick={() => this.changePic()}
                 >
-                  Change Name
+                  Change Profile Pic
                 </button>
               </div>
+            </div>
+            <div className="peer">
+              <h2>Peer to Peer Contract</h2>
             </div>
           </div>
         </div>
